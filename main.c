@@ -1,62 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>  
+#include <math.h>
 
-struct ogrenciTip {
-    int no;
-    char cevap[10];
+struct Student {
+    int id;
+    char answers[10];
 };
 
-struct sonucTip {
-    int no;
-    int puan;  
+struct Result {
+    int id;
+    int score;
 };
 
 int main()
 {
-    struct ogrenciTip ogrenci[3];
-    struct sonucTip sonuc[3];
-    char anahtar[10];
-    int i, j;
-    int dogru, yanlis;
+    int student_count;
+    printf("Enter the number of students: ");
+    scanf("%d", &student_count);
 
-    printf("Lutfen cevap anahtarini giriniz (10 harf, A B C D):\n");
+    struct Student students[student_count];
+    struct Result results[student_count];
+    char answer_key[10];
+    int i, j;
+    int correct, incorrect;
+
+    printf("Enter the answer key (10 characters, A B C D):\n");
     for (i = 0; i < 10; i++) {
-        scanf(" %c", &anahtar[i]);  
+        scanf(" %c", &answer_key[i]);
     }
 
-    printf("\nOgrenci bilgilerini giriniz\n");
+    printf("\nEnter student information\n");
 
-    for (j = 0; j < 3; j++) {
-        printf("\nOgrenci no: ");
-        scanf("%d", &ogrenci[j].no);
+    for (j = 0; j < student_count; j++) {
+        printf("\nStudent ID: ");
+        scanf("%d", &students[j].id);
 
-        dogru = 0;
-        yanlis = 0;
+        correct = 0;
+        incorrect = 0;
 
-        printf("Cevaplari giriniz (10 harf, A B C D): ");
+        printf("Enter answers (10 characters, A B C D): ");
         for (i = 0; i < 10; i++) {
-            scanf(" %c", &ogrenci[j].cevap[i]); 
-            if (anahtar[i] == ogrenci[j].cevap[i]) {
-                dogru++;
+            scanf(" %c", &students[j].answers[i]);
+            if (answer_key[i] == students[j].answers[i]) {
+                correct++;
             } else {
-                yanlis++;
+                incorrect++;
             }
         }
 
-        sonuc[j].no = ogrenci[j].no;
-        sonuc[j].puan = dogru * 3; 
+        results[j].id = students[j].id;
+        results[j].score = correct - (int)ceil(incorrect / 4.0);  
+        if (results[j].score < 0) results[j].score = 0;
 
-        printf("Dogru: %d, Yanlis: %d, Puan: %d\n", dogru, yanlis, sonuc[j].puan);
+        printf("Correct: %d, Incorrect: %d, Score: %d\n", correct, incorrect, results[j].score);
     }
 
-    printf("\nSinav Sonuclari:\n");
+    printf("\nExam Results:\n");
     printf("------------------------------\n");
-    printf("Ogrenci No  |  Puan\n");
+    printf("Student ID  |  Score\n");
     printf("------------------------------\n");
 
-    for (j = 0; j < 3; j++) {
-        printf("%10d  |  %3d\n", sonuc[j].no, sonuc[j].puan);
+    for (j = 0; j < student_count; j++) {
+        printf("%10d  |  %3d\n", results[j].id, results[j].score);
     }
 
     return 0;
